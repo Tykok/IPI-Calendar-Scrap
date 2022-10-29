@@ -4,7 +4,6 @@ from bs4 import BeautifulSoup
 import urllib.request
 
 import dateparser
-from ics import Calendar, Event
 
 
 def get_page(cookie):
@@ -51,10 +50,10 @@ def format_course(course):
   else:
     return course_prof, course_name
 
-def format_day(day) -> date:
-  return dateparser.parse(day).date()
+def format_date(day):
+  return dateparser.parse(day)
 
-def main() -> array:
+def main():
   """
   Get data from the web page and format all data.
   You'll get an array with many elements are formated like this :
@@ -69,20 +68,22 @@ def main() -> array:
   ```
   """
   # Load pages
-  page = get_page('ASP.NET_SessionId=swichxnkim2iroomp3uhbfez; .DotNetCasClientAuth=7B4FEF5615896924804735FFB626498ED1F54BED5C5C3E58D1D6792BD85FB7CA74B33F219C309B4AA2C4826C002403373187204D33135BA3904C2AE0EA33F8393CB9E2B7B44F9D4B80EE52FBCEAB21614630D3CA07453F0737F00787454B7D0B648085BE9C132ACD89050E756F8E245E13DFDA8DFFF7CCC34B8EF2AA0F53243286DD54C74E3A85C289C4E5B3E9A06F551C9749AF36A46C998990B9B88B1681736531244D28D58DA7D6815CD44137BD7FEA07D7F826C293A94A0BE19F9CD6C78D7353BD0723AA0B12C18112060E844E4B')
+  page = get_page('ASP.NET_SessionId=swichxnkim2iroomp3uhbfez; .DotNetCasClientAuth=C8A00B242B116BD0536D3DAAB024EBB6F04B439424565CB71F231922A177AD624A5F9C37E8CE6D1406F7A21D66BAF951812A6C92D1185AAAF368D6B1BDF4B4842E0909FAB9B15FEE2642EBF8BDC8FB48383C70CE8F3B42D6055232DEAD9480AD0ED4C94B0FBE6339E0720C3C5C87240E731841F63C5F87F4271797C1893A3F96EF6E5CD645930E4DC24D118DC0487A578130D3756ABF9438E5C2D2EB1381552EA54EE764B1733BBC6BB2643B9A2B6C8001B911A817AFA5507F1CA4F9890FF6154FC85AE7CC632C7CC66FA05C21FFAF3B')
   datas = get_all_data_for_week(page)
 
-  # Get table of each array and get ONLY 5 days of the week
+  # Get table of each array and get ONLY 5 days of the week and 10 first elements for others arrays
   all_day_of_weeks = datas[0][5:10]
-  all_hour = datas[3][0:5]
-  all_course = datas[1][0:5]
-  all_course_code = datas[2][0:5]
-  all_salle = datas[4][0:5]
+  all_hour = datas[3][0:10]
+  all_course = datas[1][0:10]
+  all_course_code = datas[2][0:10]
+  all_salle = datas[4][0:10]
   format_datas = []
-  for i in range(5):
+  for i in range(10):
+    hours = format_hours(all_hour[i].text)
+    actual_day = all_day_of_weeks[i//2].text
     format_datas.append({
-      'day': format_day(all_day_of_weeks[i].text), 
-      'hour': format_hours(all_hour[i].text), 
+      'day_start': format_date(f'{actual_day} {hours[0]}'), 
+      'day_end': format_date(f'{actual_day} {hours[1]}'), 
       'course': format_course(all_course[i].renderContents().decode('utf-8')), 
       'course_code': all_course_code[i].text, 
       'salle': format_salle(all_salle[i].text)

@@ -1,14 +1,19 @@
-from icalendar import Event
+from ics import Event, Calendar
+from datetime import datetime
+from pytz import timezone
 
-def create_events(calendar, date_start, date_end, name, description):
+def create_events(calendar: Calendar, date_start: datetime, date_end: datetime, name: str, description: str):
+  # local = datetime.now()
+  # utc = datetime.utcnow()
+  # time_diff = int((local - utc).days * 86400 + round((local - utc).seconds, -1))
+
   e = Event()
-  # Update with icalendar instead of ics
   e.name = name
   e.description = description
-  e.begin = date_start
-  e.end = date_end
+  e.begin = date_start.astimezone(timezone('Europe/Paris'))
+  e.end = date_end.astimezone(timezone('Europe/Paris'))
   calendar.events.add(e)
-
+  print(calendar.events)
   return calendar
 
 def create_ics(calendar):
