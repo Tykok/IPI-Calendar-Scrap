@@ -1,0 +1,11 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:ics.py - http://git.io/lLljaA
+BEGIN:VEVENT
+DESCRIPTION:\n    Intervenant : hassan aunim\n    Code : IPYT310\n    Salle : SALLE_13(DISTANCIEL)\n    
+DTEND:20221024T120000Z
+DTSTART:20221024T083000Z
+SUMMARY:Approfondissement Python (développeurs)
+UID:623e1878-8b72-4bff-b23f-9cdbb30710dd@623e.org
+END:VEVENT
+END:VCALENDAR
