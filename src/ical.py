@@ -23,7 +23,7 @@ def create_calendar_and_events(datas):
   return calendar
 
 def create_ics(calendar):
-  print('Exemple of path : C:/.../folder')
-  path = input('Give a path (without filename) : ')
-  with open(f'{path}/ipi-2022-2024.ics', 'w') as f:
+  print('Exemple of path : C:/.../folder/name.ics')
+  path = input('Give a path : ')
+  with open(f'{path}', 'w') as f:
     f.writelines(calendar.serialize_iter())
