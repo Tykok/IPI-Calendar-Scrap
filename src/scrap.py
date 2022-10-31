@@ -98,8 +98,8 @@ def main(until_month, until_year):
         hours = format_hours(all_hour[i].text)
         actual_day = all_day_of_weeks[i//2].text
         format_datas.append({
-          'day_start': format_date(f'{actual_day} {hours[0]}'), # type: ignore
-          'day_end': format_date(f'{actual_day} {hours[1]}'), # type: ignore 
+          'day_start': format_date(f'{actual_day} {date_parse.year} {hours[0]}'), # type: ignore
+          'day_end': format_date(f'{actual_day} {date_parse.year} {hours[1]}'), # type: ignore 
           'course': format_course(all_course[i].renderContents().decode('utf-8')), 
           'course_code': all_course_code[i].text, 
           'salle': format_salle(all_salle[i].text)
